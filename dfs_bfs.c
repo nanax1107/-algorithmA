@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <time.h>  // 時間計測用
+#include <time.h> 
 
 #define BUF_SIZE 80
 
@@ -24,7 +24,7 @@ void Insert(int a, int b, int weight, bool is_directed) {
     }
 }
 
-// --- BFS (幅優先探索) ---
+//BFS (幅優先探索)
 void BFS_Search(int start, int size) {
     bool *bfs_visited = calloc(size, sizeof(bool));
     int *bfs_prev = malloc(sizeof(int) * size);
@@ -45,7 +45,7 @@ void BFS_Search(int start, int size) {
     free(bfs_visited); free(bfs_prev); free(queue);
 }
 
-// --- DFS (深さ優先探索) ---
+//DFS (深さ優先探索)
 bool *dfs_visited; int *dfs_prev;
 void DFS_Rec(int u) {
     dfs_visited[u] = true;
@@ -87,24 +87,20 @@ int main(int argc, char *argv[]) {
     clock_t start_time, end_time; // 時間計測用の変数
     double cpu_time_used;
 
-    printf("データ読み込み完了。ノード数: %d\n", n);
-    printf("各アルゴリズムの実行時間を計測します...\n\n");
-
-    // --- DFS 時間計測 ---
+    //DFS 時間計測
     start_time = clock();
     DFS_Search(s, n);
     end_time = clock();
     cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
     printf("DFS 実行時間        : %f 秒\n", cpu_time_used);
 
-    // --- BFS 時間計測 ---
+    //BFS 時間計測
     start_time = clock();
     BFS_Search(s, n);
     end_time = clock();
     cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
     printf("BFS 実行時間        : %f 秒\n", cpu_time_used);
 
-    // メモリ解放
     for (i = 0; i < n; i++) {
         struct node *curr = list[i];
         while (curr != NULL) {
