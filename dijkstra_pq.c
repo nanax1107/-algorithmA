@@ -3,7 +3,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <string.h>
-#include <time.h>  // 変更: gettimeofday から clock() に統一
+#include <time.h>
 
 #define BUF_SIZE 80
 
@@ -98,16 +98,13 @@ int main(int argc, char *argv[]) {
     }
     fclose(fp);
 
-    int s = 0; // 始点を0に固定
-    clock_t start_time, end_time; // 時間計測用
+    int s = 0;
+    clock_t start_time, end_time;
     double cpu_time_used;
 
     dist = malloc(sizeof(int) * n); prev = malloc(sizeof(int) * n);
-    
-    printf("データ読み込み完了。ノード数: %d\n", n);
-    printf("優先度キュー版 ダイクストラ法の実行時間を計測します...\n\n");
 
-    // --- Dijkstra (優先度キュー) 時間計測 ---
+    //Dijkstra (優先度キュー) 時間計測
     start_time = clock();
     DijkstraPQ(s, n);
     end_time = clock();
@@ -115,7 +112,7 @@ int main(int argc, char *argv[]) {
     cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
     printf("Dijkstra (PQ) 実行時間     : %f 秒\n", cpu_time_used);
 
-    // メモリ解放
+    //メモリ解放
     free(dist); free(prev);
     for (i = 0; i < n; i++) {
         struct node *curr = list[i];
