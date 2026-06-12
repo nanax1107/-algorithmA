@@ -3,14 +3,14 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <string.h>
-#include <time.h>  // 追加: 時間計測用
+#include <time.h>
 
 #define BUF_SIZE 80
 
 int **matrix;
 int *dist, *prev, *visited;
 
-// 隣接行列版 ダイクストラ法
+//隣接行列版ダイクストラ法
 void DijkstraMatrix(int p, int size) {
     int i;
     for (i = 0; i < size; i++) {
@@ -21,7 +21,6 @@ void DijkstraMatrix(int p, int size) {
         int u = -1;
         int min = INT_MAX;
         for (i = 0; i < size; i++) {
-            // 未訪問かつ最短距離のノードを探す
             if (visited[i] == 0 && dist[i] < min) {
                 min = dist[i]; u = i;
             }
@@ -46,10 +45,8 @@ int main(int argc, char *argv[]) {
     if (argc != 2) { printf("Usage: %s <filename>\n", argv[0]); exit(1); }
     if ((fp = fopen(argv[1], "r")) == NULL) { printf("Cannot open file \n"); exit(1); }
     fgets(buf, BUF_SIZE, fp); sscanf(buf, "%d", &n);
-    
-    // 隣接行列は N * N のメモリを消費するため、安全装置として1万ノード以上は弾く
     if (n > 10000) {
-        printf("エラー: ノード数が大きすぎるため、隣接行列版の実行を安全のために中止します。\n");
+        printf("ノード数が大きすぎる\n");
         fclose(fp); return 1;
     }
 
@@ -67,18 +64,15 @@ int main(int argc, char *argv[]) {
     }
     fclose(fp);
 
-    int s = 0; // 始点を0に固定
-    clock_t start_time, end_time; // 時間計測用の変数
+    int s = 0;
+    clock_t start_time, end_time;
     double cpu_time_used;
 
     dist = malloc(sizeof(int) * n); 
     prev = malloc(sizeof(int) * n); 
     visited = malloc(sizeof(int) * n);
 
-    printf("データ読み込み完了。ノード数: %d\n", n);
-    printf("隣接行列版 ダイクストラ法の実行時間を計測します...\n\n");
-
-    // --- Dijkstra (隣接行列) 時間計測 ---
+    //Dijkstra (隣接行列) 時間計測
     start_time = clock();
     DijkstraMatrix(s, n);
     end_time = clock();
@@ -86,7 +80,7 @@ int main(int argc, char *argv[]) {
     cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
     printf("Dijkstra (Matrix) 実行時間 : %f 秒\n", cpu_time_used);
 
-    // メモリ解放
+    //メモリ解放
     free(dist); free(prev); free(visited);
     for (i = 0; i < n; i++) free(matrix[i]);
     free(matrix);
